@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Greeshma — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fafaf8;
+      --white: #ffffff;
+      --text: #1a1a1a;
+      --muted: #7a7a72;
+      --light: #f0f0eb;
+      --border: #e8e8e2;
+      --accent: #2d6a4f;
+      --accent-light: #d8f3dc;
+      --accent2: #52b788;
+      --sans: 'Plus Jakarta Sans', sans-serif;
+      --serif: 'Lora', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 1.2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: rgba(250,250,248,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-size: 1.1rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+    .logo span {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-left: 3px;
+      vertical-align: middle;
+      margin-bottom: 2px;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a { font-size: 0.88rem; color: var(--muted); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta { background: var(--accent) !important; color: #fff !important; padding: 0.55rem 1.3rem; border-radius: 100px; font-size: 0.85rem !important; }
+    .nav-cta:hover { opacity: 0.88; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 5% 4rem;
+      gap: 4rem;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.2s forwards;
+    }
+    .badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    h1.hero-name {
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.3s forwards;
+    }
+    h1.hero-name em { font-style: italic; font-family: var(--serif); font-weight: 400; color: var(--accent); }
+    .hero-role { font-size: 1.05rem; color: var(--muted); font-weight: 400; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.7s 0.4s forwards; }
+    .hero-desc { font-size: 0.97rem; color: var(--muted); line-height: 1.8; max-width: 440px; margin-bottom: 2.5rem; opacity: 0; animation: fadeUp 0.7s 0.5s forwards; }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s 0.6s forwards; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.8rem;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 100px;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #1e5035; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,79,0.25); }
+    .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    .hero-right { display: flex; justify-content: center; align-items: center; opacity: 0; animation: fadeUp 0.8s 0.5s forwards; }
+    .hero-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      max-width: 310px;
+      width: 100%;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+    }
+    .avatar-ring {
+      width: 76px; height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 1.2rem;
+    }
+    .card-name { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.2rem; }
+    .card-title { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .card-divider { height: 1px; background: var(--border); margin-bottom: 1.5rem; }
+    .card-stat-row { display: flex; justify-content: space-between; margin-bottom: 1.2rem; }
+    .card-stat label { font-size: 0.7rem; color: var(--muted); display: block; margin-bottom: 0.2rem; font-weight: 500; }
+    .card-stat span { font-size: 0.95rem; font-weight: 700; }
+    .card-tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .card-tag { font-size: 0.7rem; padding: 0.3rem 0.7rem; background: var(--accent-light); color: var(--accent); border-radius: 100px; font-weight: 600; }
+
+    /* SECTIONS */
+    section { padding: 6rem 5%; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-header { margin-bottom: 3.5rem; }
+    .section-label { font-size: 0.74rem; font-weight: 700; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.8rem; }
+    h2.section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+    h2.section-title em { font-style: italic; font-family: var(--serif); font-weight: 400; color: var(--accent); }
+
+    /* ABOUT */
+    #about { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: center; }
+    .about-body p { font-size: 0.97rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.2rem; }
+    .about-body p strong { color: var(--text); font-weight: 600; }
+    .about-highlight { background: var(--accent-light); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin-top: 1.5rem; }
+    .about-highlight p { font-size: 0.88rem !important; color: var(--accent) !important; margin: 0 !important; font-style: italic; }
+    .about-visual { display: flex; flex-direction: column; gap: 1rem; }
+    .info-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .info-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); transform: translateX(4px); }
+    .info-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .info-card h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.15rem; }
+    .info-card p { font-size: 0.78rem; color: var(--muted); margin: 0; line-height: 1.4; }
+
+    /* SKILLS */
+    #skills { background: var(--bg); }
+    .skills-categories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .skill-category { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; transition: box-shadow 0.2s, transform 0.2s; }
+    .skill-category:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.07); transform: translateY(-4px); }
+    .skill-cat-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+    .skill-cat-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 1.2rem; }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-pill { font-size: 0.78rem; padding: 0.4rem 0.85rem; border-radius: 100px; font-weight: 500; background: var(--light); color: var(--text); border: 1px solid var(--border); transition: all 0.2s; }
+    .skill-pill:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent2); }
+    .skill-pill.active { background: var(--accent-light); color: var(--accent); border-color: var(--accent2); }
+
+    /* PROJECTS */
+    #projects { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; }
+    .project-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.09); transform: translateY(-6px); }
+    .project-thumb { height: 150px; background: linear-gradient(135deg, var(--accent-light), #b7e4c7); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+    .project-body { padding: 1.5rem; }
+    .project-status { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.8rem; }
+    .status-wip { background: #fff3cd; color: #856404; }
+    .status-done { background: var(--accent-light); color: var(--accent); }
+    .project-title { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .project-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; }
+    .project-techs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+    .project-tech { font-size: 0.7rem; padding: 0.25rem 0.65rem; background: var(--white); color: var(--muted); border-radius: 100px; border: 1px solid var(--border); font-weight: 500; }
+    .project-links { display: flex; gap: 0.8rem; }
+    .project-link { font-size: 0.8rem; font-weight: 600; color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; transition: gap 0.2s; }
+    .project-link:hover { gap: 0.5rem; }
+    .coming-soon-card { background: var(--bg); border: 2px dashed var(--border); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 2rem; text-align: center; color: var(--muted); }
+    .coming-soon-card .icon { font-size: 2rem; margin-bottom: 0.8rem; }
+    .coming-soon-card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+    .coming-soon-card p { font-size: 0.82rem; line-height: 1.6; }
+
+    /* CONTACT */
+    #contact { background: var(--bg); }
+    .contact-wrapper { background: var(--white); border: 1px solid var(--border); border-radius: 28px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; }
+    .contact-left { background: var(--accent); padding: 3.5rem; color: white; }
+    .contact-left h3 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; }
+    .contact-left p { font-size: 0.9rem; opacity: 0.82; line-height: 1.8; margin-bottom: 2rem; }
+    .social-cards { display: flex; flex-direction: column; gap: 0.8rem; }
+    .social-card { display: flex; align-items: center; gap: 0.9rem; background: rgba(255,255,255,0.12); border-radius: 12px; padding: 0.9rem 1.1rem; text-decoration: none; color: white; transition: background 0.2s, transform 0.2s; }
+    .social-card:hover { background: rgba(255,255,255,0.22); transform: translateX(5px); }
+    .social-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .social-card-text { display: flex; flex-direction: column; }
+    .social-card-label { font-size: 0.68rem; opacity: 0.7; font-weight: 500; }
+    .social-card-value { font-size: 0.88rem; font-weight: 600; }
+    .contact-right { padding: 3.5rem; }
+    .contact-right h3 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .contact-right p.sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.6; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--text); display: block; margin-bottom: 0.5rem; }
+    .form-group input, .form-group textarea { width: 100%; padding: 0.85rem 1rem; border: 1.5px solid var(--border); border-radius: 12px; font-family: var(--sans); font-size: 0.9rem; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,106,79,0.1); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .btn-submit { width: 100%; padding: 0.95rem; background: var(--accent); color: white; border: none; border-radius: 100px; font-family: var(--sans); font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.2s, box-shadow 0.2s; }
+    .btn-submit:hover { background: #1e5035; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,79,0.25); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; }
+    footer p { font-size: 0.82rem; color: var(--muted); }
+    footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      #hero { grid-template-columns: 1fr; padding: 7rem 5% 4rem; }
+      .hero-right { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .skills-categories { grid-template-columns: 1fr 1fr; }
+      .contact-wrapper { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 1rem 4%; }
+      .nav-links { gap: 1rem; }
+      section { padding: 4rem 4%; }
+      .skills-categories { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Greeshma<span></span></div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Learning & Building Full Stack
+      </div>
+      <h1 class="hero-name">Hi, I'm<br><em>Greeshma</em></h1>
+      <p class="hero-role">CSE Student · Aspiring Full Stack Developer</p>
+      <p class="hero-desc">
+        I'm on a self-driven journey to become a full stack developer — learning, building, and growing one project at a time. Passionate about turning ideas into real, working applications.
+      </p>
+      <div class="hero-ctas">
+        <a href="#projects" class="btn btn-primary">See My Work ↓</a>
+        <a href="#contact" class="btn btn-outline">Say Hello</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="avatar-ring">G</div>
+        <div class="card-name">Greeshma</div>
+        <div class="card-title">CSE Student · Full Stack Learner</div>
+        <div class="card-divider"></div>
+        <div class="card-stat-row">
+          <div class="card-stat">
+            <label>Status</label>
+            <span>Learning 🌱</span>
+          </div>
+          <div class="card-stat">
+            <label>Focus</label>
+            <span>Full Stack</span>
+          </div>
+        </div>
+        <div class="card-tag-row">
+          <span class="card-tag">HTML</span>
+          <span class="card-tag">CSS</span>
+          <span class="card-tag">JavaScript</span>
+          <span class="card-tag">React</span>
+          <span class="card-tag">Node.js</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <p class="section-label">01 — About Me</p>
+        <h2 class="section-title">Who I <em>am.</em></h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-body reveal">
+          <p>Hey there! I'm <strong>Greeshma</strong>, a Computer Science and Engineering student who just started her full stack development journey. I'm learning everything from scratch — building, breaking things, and figuring it all out on my own.</p>
+          <p>I'm deeply passionate about creating things on the web. From designing clean interfaces to writing backend logic, I want to understand every layer of how applications are built. It's challenging, but that's exactly what makes it exciting.</p>
+          <p>This is a solo journey — no bootcamp, no team. Just me, my curiosity, and the internet. Every small project teaches me something new, and I'm proud of every step forward I take.</p>
+          <div class="about-highlight">
+            <p>"I'm not just learning to code — I'm learning to build things that matter."</p>
+          </div>
+        </div>
+        <div class="about-visual reveal">
+          <div class="info-card">
+            <div class="info-icon">🎓</div>
+            <div>
+              <h4>Education</h4>
+              <p>Computer Science & Engineering (CSE)</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">🚀</div>
+            <div>
+              <h4>Current Goal</h4>
+              <p>Master full stack development end-to-end</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">💡</div>
+            <div>
+              <h4>Approach</h4>
+              <p>Self-taught, project-based, solo journey</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">🌱</div>
+            <div>
+              <h4>Currently Learning</h4>
+              <p>React, Node.js, databases & deployment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <p class="section-label">02 — Skills</p>
+        <h2 class="section-title">What I'm <em>learning.</em></h2>
+      </div>
+      <div class="skills-categories reveal">
+        <div class="skill-category">
+          <div class="skill-cat-icon">🖥️</div>
+          <div class="skill-cat-title">Frontend</div>
+          <div class="skill-pills">
+            <span class="skill-pill active">HTML5</span>
+            <span class="skill-pill active">CSS3</span>
+            <span class="skill-pill active">JavaScript</span>
+            <span class="skill-pill">React</span>
+            <span class="skill-pill">Tailwind CSS</span>
+            <span class="skill-pill">Responsive Design</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <div class="skill-cat-icon">⚙️</div>
+          <div class="skill-cat-title">Backend</div>
+          <div class="skill-pills">
+            <span class="skill-pill">Node.js</span>
+            <span class="skill-pill">Express.js</span>
+            <span class="skill-pill">REST APIs</span>
+            <span class="skill-pill">Python basics</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <div class="skill-cat-icon">🗄️</div>
+          <div class="skill-cat-title">Tools & Database</div>
+          <div class="skill-pills">
+            <span class="skill-pill">MongoDB</span>
+            <span class="skill-pill">MySQL</span>
+            <span class="skill-pill active">Git & GitHub</span>
+            <span class="skill-pill active">VS Code</span>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:0.8rem; color:var(--muted); margin-top:1.5rem; text-align:center;" class="reveal">
+        🌱 <em>Green pills = actively learning. More being added every week!</em>
+      </p>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <p class="section-label">03 — Projects</p>
+        <h2 class="section-title">Things I've <em>built.</em></h2>
+      </div>
+      <div class="projects-grid reveal">
+        <div class="project-card">
+          <div class="project-thumb">🌐</div>
+          <div class="project-body">
+            <span class="project-status status-done">Completed</span>
+            <h3 class="project-title">My Portfolio Website</h3>
+            <p class="project-desc">This very site! Built from scratch as my first real project — showcasing my journey and work as a full stack learner.</p>
+            <div class="project-techs">
+              <span class="project-tech">HTML</span>
+              <span class="project-tech">CSS</span>
+              <span class="project-tech">JavaScript</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link">Live Site →</a>
+              <a href="https://github.com/greeshmakalathur-isc" target="_blank" class="project-link">GitHub →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-thumb">📝</div>
+          <div class="project-body">
+            <span class="project-status status-wip">In Progress</span>
+            <h3 class="project-title">To-Do App</h3>
+            <p class="project-desc">A full stack to-do app with user auth, CRUD operations, and a clean UI. My first backend + frontend integration project.</p>
+            <div class="project-techs">
+              <span class="project-tech">React</span>
+              <span class="project-tech">Node.js</span>
+              <span class="project-tech">MongoDB</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/greeshmakalathur-isc" target="_blank" class="project-link">GitHub →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="coming-soon-card">
+          <div class="icon">✨</div>
+          <h3>More Projects Coming</h3>
+          <p>I'm actively building and learning. New projects will appear here as I complete them. Follow along on GitHub!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <p class="section-label">04 — Contact</p>
+        <h2 class="section-title">Let's <em>connect.</em></h2>
+      </div>
+      <div class="contact-wrapper reveal">
+        <div class="contact-left">
+          <h3>Always happy to connect 👋</h3>
+          <p>Whether you want to collaborate, give feedback on my projects, or just say hi — my DMs and inbox are open!</p>
+          <div class="social-cards">
+            <a href="https://instagram.com/geeshu1234" target="_blank" class="social-card">
+              <div class="social-icon">📸</div>
+              <div class="social-card-text">
+                <span class="social-card-label">Instagram</span>
+                <span class="social-card-value">@geeshu1234</span>
+              </div>
+            </a>
+            <a href="https://github.com/greeshmakalathur-isc" target="_blank" class="social-card">
+              <div class="social-icon">🐙</div>
+              <div class="social-card-text">
+                <span class="social-card-label">GitHub</span>
+                <span class="social-card-value">greeshmakalathur-isc</span>
+              </div>
+            </a>
+            <a href="mailto:greeshmakalathur@gmail.com" class="social-card">
+              <div class="social-icon">✉️</div>
+              <div class="social-card-text">
+                <span class="social-card-label">Email</span>
+                <span class="social-card-value">greeshmakalathur@gmail.com</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="contact-right">
+          <h3>Send me a message</h3>
+          <p class="sub">Fill this out and I'll get back to you as soon as I can!</p>
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="What's your name?" />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" placeholder="your@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea placeholder="What's on your mind?"></textarea>
+          </div>
+          <button class="btn-submit" onclick="this.textContent='Sent! 🎉'; this.style.background='#1e5035'; this.disabled=true;">Send Message</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Greeshma. Built with 💚 and a lot of learning.</p>
+    <p>Designed & coded by <a href="#">Greeshma</a></p>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
